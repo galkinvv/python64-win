@@ -1,0 +1,5 @@
+python311libfull.zip
+Lib
+
+# Uncommented to run site.main() automatically
+import site
