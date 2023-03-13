@@ -97,7 +97,7 @@ class ScriptMaker(object):
     def _get_alternate_executable(self, executable, options):
         if options.get('gui', False) and self._is_nt:  # pragma: no cover
             dn, fn = os.path.split(executable)
-            fn = fn.replace('python', 'pythonw')
+            fn = fn.replace('python', 'python')
             executable = os.path.join(dn, fn)
         return executable
 

@@ -1,5 +1,6 @@
-Lib/python311libfull.zip
-Lib
+Lib/packages/python311libfull.zip
+Lib/packages/DLLs
+Lib/packages
 
 # Uncommented to run site.main() automatically
 import site
