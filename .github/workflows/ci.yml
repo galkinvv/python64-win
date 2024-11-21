@@ -18,6 +18,8 @@ jobs:
           key: downloaded
           path: |
             downloaded/
-      - run: .\get-and-package-python.ps1 -pythonver 3.13.0
+      - run: |
+          .\get-and-expand-python.ps1 -pythonver 3.13.0
+          .\package-python.py.bat
         shell: powershell
 
