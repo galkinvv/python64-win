@@ -22,4 +22,8 @@ jobs:
           .\get-and-expand-python.ps1 -pythonver 3.13.1
           .\package-python.py.bat
         shell: powershell
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Portable python64-win
+          path: artifacts
 
