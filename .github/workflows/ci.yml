@@ -19,7 +19,7 @@ jobs:
           path: |
             downloaded/
       - run: |
-          .\get-and-expand-python.ps1 -pythonver 3.13.0
+          .\get-and-expand-python.ps1 -pythonver 3.13.1
           .\package-python.py.bat
         shell: powershell
 
