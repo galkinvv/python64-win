@@ -1,0 +1,3 @@
+#A set of hacks to enable pip using relative paths embedded in installed exes (works only current if directory is a prefix dir)
+import os, sys; sys.__getattr__ = lambda name, sys_values_orig={"prefix": sys.prefix, "exec_prefix":sys.exec_prefix}: ("." if (orig_path := sys_values_orig[name]) == os.getcwd() else orig_path) if name in sys_values_orig else (_ for _ in ()).throw(AttributeError(f"module 'sys' has no attribute '{name}'")); del sys.prefix; del sys.exec_prefix
+import sysconfig; sysconfig._INSTALL_SCHEMES["nt_venv"]["scripts"] = "{base}"; sysconfig.is_python_build = lambda *_a, **_k: True
