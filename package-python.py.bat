@@ -25,8 +25,14 @@ def create_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path):
                     shutil.copytree(package, target_dir/"Lib"/package.name)
                 else:
                     std_lib.writepy(package)
-    shutil.copy2(SELF_DIR / "python3.pth", target_dir)
+    bundled_pip_name = next((target_dir/"Lib/ensurepip/_bundled").iterdir()).relative_to(target_dir)
+    pth_text = (SELF_DIR / "python3.pth").read_text()
+    (target_dir/"python3.pth").write_text(pth_text + f"\n{bundled_pip_name}")
+    # install executables for calling pip from target dir, but since the pip itself is added to pth as bundled archive - delete its installation in site-packages
     subprocess.check_call([str(target_dir/pathlib.Path(sys.executable).name), "-m", "ensurepip", "--default-pip"], cwd=target_dir)
+    for package in target_site.iterdir():
+        if package.is_dir() and package.name.startswith("pip"):
+            shutil.rmtree(package)
 
 if __name__ == "__main__":
     full_dir = pathlib.Path(sys.executable).absolute().parent
