@@ -26,7 +26,9 @@ def create_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path):
                 else:
                     std_lib.writepy(package)
 
-    shutil.copy2(SELF_DIR / "ConsolePip.bat", target_dir / "ConsolePip.bat")
+    shutil.copy2(SELF_DIR / "ConsoleForPortablePip.bat", target_dir)
+    shutil.copy2(SELF_DIR / "portable-pip.bat", target_dir / "pip.bat")
+    shutil.copy2(SELF_DIR / "portable-pip.bat", target_dir / "pip3.bat")
 
 if __name__ == "__main__":
     full_dir = pathlib.Path(sys.executable).absolute().parent
