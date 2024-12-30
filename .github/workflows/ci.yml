@@ -1,4 +1,5 @@
-name: ci
+permissions:
+  contents: write
 on:
   workflow_dispatch:
     inputs:
@@ -11,7 +12,7 @@ on:
       releasebranchformat:
         default: 'PIPinZIP-win64-{0}'
 jobs:
-  get-and-package-python:
+  get-package-push:
     runs-on: windows-2025
     steps:
       - uses: actions/checkout@v4
@@ -25,9 +26,6 @@ jobs:
           .github\expanded\python.exe .github\package-python.py ${{ format(github.event.inputs.releasebranchformat, github.event.inputs.pythonver)}}
       - uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5  # v9.1.4
         with:
+          remove: "-r --cached --quiet .github downloaded"
           message: "Github action build ${{ format(github.event.inputs.releasebranchformat, github.event.inputs.pythonver)}}"
           push: origin HEAD:${{ format(github.event.inputs.releasebranchformat, github.event.inputs.pythonver)}} --force
-          remove: "-r --cached --quiet .github"
-
-
-
