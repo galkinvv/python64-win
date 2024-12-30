@@ -24,7 +24,7 @@ jobs:
         with:
           name: Main installer expanded
           path: expanded
-      - run: .\package-python.py.bat
+      - run: expanded\python.exe .\package-python.py
       - uses: actions/upload-artifact@v4
         with:
           name: Portable-pip-python64-win
