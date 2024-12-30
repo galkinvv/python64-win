@@ -11,5 +11,5 @@ if (!(Test-Path "./downloaded/python-${pythonver}-amd64-full.exe")) {
 }
 # Expand-Archive -LiteralPath "./downloaded/python.${pythonver}.nupkg.zip"
 # Rename-Item "python.${pythonver}.nupkg" -NewName "expanded"
-downloaded/python-${pythonver}-amd64-full.exe /passive AssociateFiles=0 Include_doc=0 Include_dev=0 Include_launcher=0 Include_pip=0 Include_test=0 Shortcuts=0 DefaultJustForMeTargetDir=expanded
+& "downloaded/python-${pythonver}-amd64-full.exe" /quiet AssociateFiles=0 Include_doc=0 Include_dev=0 Include_launcher=0 Include_pip=0 Include_test=0 Shortcuts=0 DefaultJustForMeTargetDir=expanded | Out-Default
 Get-ChildItem "expanded"
