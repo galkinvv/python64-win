@@ -40,5 +40,5 @@ def create_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path):
 
 if __name__ == "__main__":
     full_dir = pathlib.Path(sys.executable).absolute().parent
-    target_dir = SELF_DIR / "artifacts"
+    target_dir = SELF_DIR.parent / "artifacts"
     create_python_distr(full_dir, target_dir)
