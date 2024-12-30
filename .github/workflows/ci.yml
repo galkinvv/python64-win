@@ -8,6 +8,8 @@ on:
         default: 'python-{0}-amd64-full.exe'
       pythoninsturlformat:
         default: 'https://github.com/adang1345/PythonWin7/raw/refs/heads/master/{0}'
+      releasebranchformat:
+        default: 'PIPinZIP-win64-{0}'
 jobs:
   get-and-package-python:
     runs-on: windows-2025
@@ -23,13 +25,12 @@ jobs:
           .github\expanded\python.exe .github\package-python.py
       - uses: actions/upload-artifact@v4
         with:
-          name: Portable-pip-python64-win
-          path: artifacts
-      - run: |
-          git rm portable-pip.bat
-          git rm -rf .github
-          mv -Force artifacts/* .
-          rmdir artifacts
+          name: PIPinZIP
+          path: .
+      - uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5: #v9.1.4
+        with:
+          push: origin ${{ format(github.event.inputs.releasebranchformat, github.event.inputs.pythonver)}} --force
+          remove: "-r --cached .github"
 
 
 

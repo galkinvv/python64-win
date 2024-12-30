@@ -34,11 +34,10 @@ def create_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path):
                 else:
                     shutil.copy2(f, sub_target / f.name)
         
-    shutil.copy2(SELF_DIR.parent / "ConsoleForPortablePip.bat", target_dir)
-    shutil.copy2(SELF_DIR.parent / "portable-pip.bat", target_dir / "pip.bat")
-    shutil.copy2(SELF_DIR.parent / "portable-pip.bat", target_dir / "pip3.bat")
+    shutil.copy2(SELF_DIR / "portable-pip.bat", target_dir / "pip.bat")
+    shutil.copy2(SELF_DIR / "portable-pip.bat", target_dir / "pip3.bat")
 
 if __name__ == "__main__":
     full_dir = pathlib.Path(sys.executable).absolute().parent
-    target_dir = SELF_DIR.parent / "artifacts"
+    target_dir = SELF_DIR.parent
     create_python_distr(full_dir, target_dir)
