@@ -18,12 +18,15 @@ jobs:
           key: downloaded
           path: |
             downloaded/
-      - run: |
-          .\get-and-expand-python.ps1 -pythonver 3.13.1
-          .\package-python.py.bat
-        shell: powershell
+      - run: .\get-and-expand-python.ps1 -pythonver 3.13.1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Main installer expanded
+          path: expanded
+      - run: .\package-python.py.bat
       - uses: actions/upload-artifact@v4
         with:
           name: Portable-pip-python64-win
           path: artifacts
+
 
