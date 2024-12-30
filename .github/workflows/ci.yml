@@ -18,17 +18,18 @@ jobs:
           key: downloaded
           path: |
             downloaded/
-      - run: .github\get-and-expand-python.ps1 -pythoninstexe ${{ format(github.event.inputs.pythoninstexeformat, github.event.inputs.pythonver)}} -pythoninsturl ${{ format(github.event.inputs.pythoninsturlformat, github.event.inputs.pythonver)}}
-      - run: .github\expanded\python.exe .github\package-python.py
+      - run: |
+          .github\get-and-expand-python.ps1 -pythoninstexe ${{ format(github.event.inputs.pythoninstexeformat, github.event.inputs.pythonver)}} -pythoninsturl ${{ format(github.event.inputs.pythoninsturlformat, github.event.inputs.pythonver)}}
+          .github\expanded\python.exe .github\package-python.py
       - uses: actions/upload-artifact@v4
         with:
           name: Portable-pip-python64-win
           path: artifacts
       - run: |
-        git rm portable-pip.bat
-        git rm -f .github
-        mv -f artifacts/* .
-        rmdir artifacts
+          git rm portable-pip.bat
+          git rm -f .github
+          mv -f artifacts/* .
+          rmdir artifacts
 
 
 
