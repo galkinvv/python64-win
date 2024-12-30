@@ -31,7 +31,7 @@ def move_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path, release_
         
     shutil.copy2(SELF_DIR / "portable-pip.bat", target_dir / "pip.bat")
     shutil.copy2(SELF_DIR / "portable-pip.bat", target_dir / "pip3.bat")
-    launcher = SELF_DIR / "ConsolePIPinZIP.bat"
+    launcher = target_dir / "ConsolePIPinZIP.bat"
     launcher_text = launcher.read_text()
     launcher.write_text(launcher_text.replace("%CONSOLE_NAME_PLACEHOLDER%", release_name))
 
