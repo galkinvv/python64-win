@@ -1,6 +1,6 @@
 param (
     [Parameter(Mandatory=$true)][string]$pythoninstexe,
-    [Parameter(Mandatory=$true)][string]$pythoninsturl,
+    [Parameter(Mandatory=$true)][string]$pythoninsturl
 )
 New-Item -Type Directory -Force ./downloaded
 if (!(Test-Path "./downloaded/${pythoninstexe}")) {
