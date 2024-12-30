@@ -4,7 +4,7 @@ SELF_DIR = pathlib.Path(__file__).absolute().parent
 def move_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path, release_name: str):
     for f in full_dir.iterdir():
         if f.name.lower() == "dlls" or f.suffix.lower() in {".exe", ".dll"}:
-            f.rename(target_dir)
+            f.rename(target_dir/f.name)
 
     expected_zip_name = pathlib.Path(next(p for p in sys.path if p.endswith(".zip"))).name
     with zipfile.PyZipFile(target_dir / expected_zip_name, mode="w") as std_lib:
@@ -17,7 +17,7 @@ def move_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path, release_
             if package.is_dir():
                 if package.name in {"venv", "pydoc_data", "ensurepip", "idlelib", "turtledemo"}:
                     # packages with non-py files that a simpler to handle out-of-zip
-                    package.rename(target_dir/"Lib")
+                    package.rename(target_dir/"Lib"/package.name)
                 else:
                     std_lib.writepy(package)
         shutil.rmtree(target_dir/"Lib/idlelib/idle_test")
@@ -27,7 +27,7 @@ def move_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path, release_
         sub_target.mkdir(parents=True)
         for f in (full_dir/ "tcl" / sub_dir).iterdir():
             if f.suffix.lower() == ".tcl" or f.name.lower() in {"tclindex", "opt0.4", "ttk"}:
-                f.rename(sub_target)
+                f.rename(sub_target/f.name)
         
     shutil.copy2(SELF_DIR / "portable-pip.bat", target_dir / "pip.bat")
     shutil.copy2(SELF_DIR / "portable-pip.bat", target_dir / "pip3.bat")
