@@ -1,13 +1,11 @@
 import sys, pathlib, shutil, zipfile, subprocess
 SELF_DIR = pathlib.Path(__file__).absolute().parent
 
-def create_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path):
-    if target_dir.exists():
-        shutil.rmtree(target_dir)
-    shutil.copytree(full_dir/"DLLs", target_dir/"DLLs")
+def move_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path, release_name: str):
     for f in full_dir.iterdir():
-        if f.suffix.lower() in {".exe", ".dll"}:
-            shutil.copy2(f, target_dir)
+        if f.name.lower() == "dlls" or f.suffix.lower() in {".exe", ".dll"}:
+            f.rename(target_dir)
+
     expected_zip_name = pathlib.Path(next(p for p in sys.path if p.endswith(".zip"))).name
     with zipfile.PyZipFile(target_dir / expected_zip_name, mode="w") as std_lib:
         source_lib = full_dir/"Lib"
@@ -19,7 +17,7 @@ def create_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path):
             if package.is_dir():
                 if package.name in {"venv", "pydoc_data", "ensurepip", "idlelib", "turtledemo"}:
                     # packages with non-py files that a simpler to handle out-of-zip
-                    shutil.copytree(package, target_dir/"Lib"/package.name)
+                    package.rename(target_dir/"Lib")
                 else:
                     std_lib.writepy(package)
         shutil.rmtree(target_dir/"Lib/idlelib/idle_test")
@@ -29,15 +27,15 @@ def create_python_distr(full_dir: pathlib.Path, target_dir: pathlib.Path):
         sub_target.mkdir(parents=True)
         for f in (full_dir/ "tcl" / sub_dir).iterdir():
             if f.suffix.lower() == ".tcl" or f.name.lower() in {"tclindex", "opt0.4", "ttk"}:
-                if f.is_dir():
-                    shutil.copytree(f, sub_target / f.name)
-                else:
-                    shutil.copy2(f, sub_target / f.name)
+                f.rename(sub_target)
         
     shutil.copy2(SELF_DIR / "portable-pip.bat", target_dir / "pip.bat")
     shutil.copy2(SELF_DIR / "portable-pip.bat", target_dir / "pip3.bat")
+    launcher = SELF_DIR / "ConsolePIPinZIP.bat"
+    launcher_text = launcher.read_text()
+    launcher.write_text(launcher_text.replace("%CONSOLE_NAME_PLACEHOLDER%", release_name))
 
 if __name__ == "__main__":
     full_dir = pathlib.Path(sys.executable).absolute().parent
     target_dir = SELF_DIR.parent
-    create_python_distr(full_dir, target_dir)
+    move_python_distr(full_dir, target_dir, sys.argv[1])
