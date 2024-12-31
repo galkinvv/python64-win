@@ -1,0 +1,1 @@
+@START "IDLE" "%~dp0\pythonw.exe" "Lib\idlelib\idle.pyw" %*
