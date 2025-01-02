@@ -11,6 +11,7 @@ if __name__ == "__main__":
     os.chdir(exe_dir)
     
     sys.executable = ".\\" + os.path.basename(sys.executable)  # alters the python name embedded in installed launchers
+    sysconfig._PIP_USE_SYSCONFIG = True  # use sysconfig instead of distutils even in 3.9
     sysconfig._INSTALL_SCHEMES['nt']['scripts'] = '{base}'  # alters the launchers directory"
     sys.argv.pop(0) # remove this wrapper from command line
     runpy.run_module('pip', run_name='__main__')
